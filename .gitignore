@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Mekatrol.Automatum/.vs
+/Mekatrol.Automatum/Mekatrol.Automatum.Entities/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.Entities/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.Middleware/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.Middleware/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.Models/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.Models/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.NodeServer/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.NodeServer/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.Services/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.Services/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.UnitTests/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.UnitTests/obj
+/Mekatrol.Automatum/Mekatrol.Automatum.Utilities/bin
+/Mekatrol.Automatum/Mekatrol.Automatum.Utilities/obj
