@@ -222,6 +222,9 @@
         "type": "string"
       },
       "Flow": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -254,6 +257,12 @@
         "additionalProperties": false
       },
       "FlowBlock": {
+        "required": [
+          "id",
+          "offset",
+          "size",
+          "zOrder"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -289,6 +298,12 @@
         "additionalProperties": false
       },
       "FlowConnection": {
+        "required": [
+          "endBlockId",
+          "endPin",
+          "startBlockId",
+          "startPin"
+        ],
         "type": "object",
         "properties": {
           "startBlockId": {
@@ -311,6 +326,9 @@
         "additionalProperties": false
       },
       "FlowSummary": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -329,6 +347,14 @@
         "additionalProperties": false
       },
       "InputOutput": {
+        "required": [
+          "direction",
+          "offset",
+          "pin",
+          "side",
+          "size",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "pin": {
@@ -377,6 +403,10 @@
         "type": "string"
       },
       "Offset": {
+        "required": [
+          "x",
+          "y"
+        ],
         "type": "object",
         "properties": {
           "x": {
@@ -391,6 +421,10 @@
         "additionalProperties": false
       },
       "Size": {
+        "required": [
+          "height",
+          "width"
+        ],
         "type": "object",
         "properties": {
           "width": {

@@ -3,7 +3,6 @@ using Mekatrol.Automatum.Services.Data;
 using Mekatrol.Automatum.Services.Devices;
 using Mekatrol.Automatum.Services.Flows;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Mekatrol.Automatum.Services.Extensions;
 
