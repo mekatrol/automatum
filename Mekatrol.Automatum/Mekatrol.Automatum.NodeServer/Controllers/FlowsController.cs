@@ -12,7 +12,7 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     public async Task<IList<FlowSummary>> Get(CancellationToken cancellationToken)
     {
         logger.LogDebug("Getting flows...");
-        var flows = await flowService.ReadFlowSummaries(cancellationToken);
+        var flows = await flowService.GetSummaries(cancellationToken);
         return flows;
     }
 
@@ -20,7 +20,7 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     public async Task<Flow> Get(Guid id, CancellationToken cancellationToken)
     {
         logger.LogDebug("{message}", $"Getting flow with ID '${id}'");
-        var flow = await flowService.ReadFlow(id, cancellationToken);
+        var flow = await flowService.Get(id, cancellationToken);
         return flow;
     }
 
@@ -28,7 +28,7 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     public async Task<Flow> Post([FromBody] Flow flow, CancellationToken cancellationToken)
     {
         logger.LogDebug("{message}", $"Creating flow with ID '{flow.Id}'");
-        flow = await flowService.CreateFlow(flow, cancellationToken);
+        flow = await flowService.Create(flow, cancellationToken);
         return flow;
     }
 
@@ -36,7 +36,7 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     public async Task<Flow> Put([FromBody] Flow flow, CancellationToken cancellationToken)
     {
         logger.LogDebug("{message}", $"Saving flow with ID '{flow.Id}'");
-        flow = await flowService.UpdateFlow(flow, cancellationToken);
+        flow = await flowService.Update(flow, cancellationToken);
         return flow;
     }
 
@@ -44,6 +44,6 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     public void Delete(Guid id)
     {
         logger.LogDebug("{message}", $"Deleting flow with ID '${id}'");
-        flowService.DeleteFlow(id);
+        flowService.Delete(id);
     }
 }

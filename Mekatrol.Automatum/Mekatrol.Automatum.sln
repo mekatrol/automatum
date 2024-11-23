@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mekatrol.Automatum.Entities
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mekatrol.Automatum.Models", "Mekatrol.Automatum.Models\Mekatrol.Automatum.Models.csproj", "{A4BEF707-FBED-4428-840B-F07A7B1C288B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mekatrol.Automatum.Middleware", "Mekatrol.Automatum.Middleware\Mekatrol.Automatum.Middleware.csproj", "{9F27BEFA-18C3-467E-BCD4-9A980C05766D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mekatrol.Automatum.Middleware", "Mekatrol.Automatum.Middleware\Mekatrol.Automatum.Middleware.csproj", "{9F27BEFA-18C3-467E-BCD4-9A980C05766D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{939E6254-8F4E-4463-BD1C-7C7925DCE985}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

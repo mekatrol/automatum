@@ -37,7 +37,7 @@ internal class FlowService : IFlowService
         Directory.CreateDirectory(Path.Combine(_dataStorePath, DataService.DirectoryDeleted, DataService.DirectoryPoints));
     }
 
-    public Task<IList<FlowSummary>> ReadFlowSummaries(CancellationToken cancellationToken)
+    public Task<IList<FlowSummary>> GetSummaries(CancellationToken cancellationToken)
     {
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
@@ -55,7 +55,7 @@ internal class FlowService : IFlowService
         return Task.FromResult((IList<FlowSummary>)flowSummaries);
     }
 
-    public Task<Flow> ReadFlow(Guid id, CancellationToken cancellationToken)
+    public Task<Flow> Get(Guid id, CancellationToken cancellationToken)
     {
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
@@ -67,7 +67,7 @@ internal class FlowService : IFlowService
         return Task.FromResult(value);
     }
 
-    public async Task<Flow> CreateFlow(Flow flow, CancellationToken cancellationToken)
+    public async Task<Flow> Create(Flow flow, CancellationToken cancellationToken)
     {
         if (flow.Id != Guid.Empty)
         {
@@ -86,7 +86,7 @@ internal class FlowService : IFlowService
         return JsonSerializer.Deserialize<Flow>(json, JsonSerializerExtensions.ApiSerializerOptions)!;
     }
 
-    public async Task<Flow> UpdateFlow(Flow flow, CancellationToken cancellationToken)
+    public async Task<Flow> Update(Flow flow, CancellationToken cancellationToken)
     {
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
@@ -98,7 +98,7 @@ internal class FlowService : IFlowService
         return JsonSerializer.Deserialize<Flow>(json, JsonSerializerExtensions.ApiSerializerOptions)!;
     }
 
-    public Task DeleteFlow(Guid id)
+    public Task Delete(Guid id)
     {
         // Lock the data service
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);

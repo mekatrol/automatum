@@ -1,11 +1,15 @@
 using Mekatrol.Automatum.Middleware.Extensions;
 using Mekatrol.Automatum.Services.Configuration;
 using Mekatrol.Automatum.Services.Extensions;
+using Microsoft.VisualBasic;
+using System.Text.Json.Serialization;
 
 namespace Mekatrol.Automatum.NodeServer;
 
 public class Program
 {
+    private const string AppCorsPolicy = nameof(AppCorsPolicy);
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -31,17 +35,38 @@ public class Program
         builder.Services.Configure<DevicesConfiguration>(
             builder.Configuration.GetSection(DevicesConfiguration.SectionName));
 
+        // Bind origins configuration
+        var originsConfiguration = new OriginsConfiguration();
+        builder.Configuration.Bind(OriginsConfiguration.SectionName, originsConfiguration);
+
         // Add services to the container.
         builder.Services.AddExceptionMiddleware();
 
         builder.Services.AddAppServices();
 
-        builder.Services.AddControllers();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: AppCorsPolicy,
+                policy =>
+                {
+                    policy.WithOrigins([.. originsConfiguration]);
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyHeader();
+                });
+        });
+
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+            );
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        app.UseCors(AppCorsPolicy);
 
         app.UseExceptionMiddleware();
 
@@ -66,3 +91,5 @@ public class Program
         app.Run();
     }
 }
+
+

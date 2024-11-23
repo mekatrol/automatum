@@ -21,7 +21,7 @@ public class FlowServiceTest : ServicesUnitTest
         var flowService = _serviceProvider.GetRequiredService<IFlowService>();
 
         var cancellationTokenSource = new CancellationTokenSource();
-        var ex = await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await flowService.CreateFlow(flow, cancellationTokenSource.Token));
+        var ex = await Assert.ThrowsExceptionAsync<BadRequestException>(async () => await flowService.Create(flow, cancellationTokenSource.Token));
 
         Assert.AreEqual(ex.Errors[0].ErrorMessage, $"A new flow must have the ID set to '{Guid.Empty}'");
     }
@@ -40,12 +40,36 @@ public class FlowServiceTest : ServicesUnitTest
         var flowService = _serviceProvider.GetRequiredService<IFlowService>();
 
         var cancellationTokenSource = new CancellationTokenSource();
-        await flowService.CreateFlow(flow, cancellationTokenSource.Token);
+        await flowService.Create(flow, cancellationTokenSource.Token);
 
         var flowFileName = Path.GetFullPath(Path.Combine("./", "flows", $"{flow.Id}.json"));
 
         Assert.IsTrue(File.Exists(flowFileName));
 
         File.Delete(flowFileName);
+    }
+
+    [TestMethod]
+    public async Task TestFlowNotFound()
+    {
+        var flowService = _serviceProvider.GetRequiredService<IFlowService>();
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        var id = Guid.NewGuid();
+        var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(async () => await flowService.Get(id, cancellationTokenSource.Token));
+
+        Assert.AreEqual(ex.Errors[0].ErrorMessage, $"A flow with the ID '{id}' was not found.");
+    }
+
+    [TestMethod]
+    public async Task TestFlowGetEmptyGuid()
+    {
+        var flowService = _serviceProvider.GetRequiredService<IFlowService>();
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        var id = Guid.Empty;
+        var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(async () => await flowService.Get(id, cancellationTokenSource.Token));
+
+        Assert.AreEqual(ex.Errors[0].ErrorMessage, $"A flow with the ID '{id}' was not found.");
     }
 }
