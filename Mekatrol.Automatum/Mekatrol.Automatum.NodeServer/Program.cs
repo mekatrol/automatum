@@ -1,7 +1,6 @@
 using Mekatrol.Automatum.Middleware.Extensions;
 using Mekatrol.Automatum.Services.Configuration;
 using Mekatrol.Automatum.Services.Extensions;
-using Microsoft.VisualBasic;
 using System.Text.Json.Serialization;
 
 namespace Mekatrol.Automatum.NodeServer;
@@ -65,6 +64,8 @@ public class Program
         {
             c.SchemaFilter<NonNullablePropertiesRequiredSchemaFilter>();
         });
+
+        builder.Services.AddApiBehaviours();
 
         var app = builder.Build();
 

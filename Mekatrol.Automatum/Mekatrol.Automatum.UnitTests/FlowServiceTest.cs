@@ -15,7 +15,8 @@ public class FlowServiceTest : ServicesUnitTest
         {
             Label = "label1",
             Blocks = [],
-            Connections = []
+            Connections = [],
+            PersistState = PersistState.New
         };
 
         var flowService = _serviceProvider.GetRequiredService<IFlowService>();
@@ -34,7 +35,8 @@ public class FlowServiceTest : ServicesUnitTest
             Id = Guid.Empty,
             Label = "label1",
             Blocks = [],
-            Connections = []
+            Connections = [],
+            PersistState = PersistState.New
         };
 
         var flowService = _serviceProvider.GetRequiredService<IFlowService>();

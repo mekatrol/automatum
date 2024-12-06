@@ -69,6 +69,8 @@ internal class DataLoadService(
 
         var flowFileNames = Directory.GetFiles(flowsPath, "*.json");
 
+        var success = true;
+
         dataService.Flows.Clear();
 
         foreach (var flowFile in flowFileNames)
@@ -82,10 +84,11 @@ internal class DataLoadService(
             catch (Exception ex)
             {
                 logger.LogError(ex);
+                success = false;
             }
         }
 
-        return true;
+        return success;
     }
 
     private async Task<bool> LoadPoints(CancellationToken stoppingToken)

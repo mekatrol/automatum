@@ -223,7 +223,13 @@
       },
       "Flow": {
         "required": [
-          "id"
+          "blocks",
+          "connections",
+          "description",
+          "enabled",
+          "id",
+          "label",
+          "persistState"
         ],
         "type": "object",
         "properties": {
@@ -232,35 +238,42 @@
             "format": "uuid"
           },
           "label": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
           },
           "blocks": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FlowBlock"
-            },
-            "nullable": true
+            }
           },
           "connections": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FlowConnection"
-            },
-            "nullable": true
+            }
+          },
+          "persistState": {
+            "$ref": "#/components/schemas/PersistState"
           }
         },
         "additionalProperties": false
       },
       "FlowBlock": {
         "required": [
+          "functionType",
           "id",
+          "io",
           "offset",
+          "selected",
           "size",
+          "z",
+          "zBoost",
           "zOrder"
         ],
         "type": "object",
@@ -274,8 +287,13 @@
             "nullable": true
           },
           "functionType": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
+          },
+          "io": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InputOutput"
+            }
           },
           "offset": {
             "$ref": "#/components/schemas/Offset"
@@ -287,11 +305,27 @@
             "type": "integer",
             "format": "int32"
           },
-          "io": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InputOutput"
-            },
+          "zBoost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "z": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "selected": {
+            "type": "boolean"
+          },
+          "draggingAsNew": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dragLocationInvalid": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "dragLocationHasBeenValid": {
+            "type": "boolean",
             "nullable": true
           }
         },
@@ -301,6 +335,7 @@
         "required": [
           "endBlockId",
           "endPin",
+          "selected",
           "startBlockId",
           "startPin"
         ],
@@ -321,13 +356,18 @@
           "endPin": {
             "type": "integer",
             "format": "int32"
+          },
+          "selected": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
       },
       "FlowSummary": {
         "required": [
-          "id"
+          "description",
+          "id",
+          "label"
         ],
         "type": "object",
         "properties": {
@@ -336,12 +376,10 @@
             "format": "uuid"
           },
           "label": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -419,6 +457,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "PersistState": {
+        "enum": [
+          "New",
+          "Unmodified",
+          "Modified"
+        ],
+        "type": "string"
       },
       "Size": {
         "required": [

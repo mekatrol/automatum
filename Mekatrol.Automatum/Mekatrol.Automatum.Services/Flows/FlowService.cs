@@ -57,6 +57,16 @@ internal class FlowService : IFlowService
 
     public Task<Flow> Get(Guid id, CancellationToken cancellationToken)
     {
+        // If the id is an empty GUID then caller wants a new default flow (do not persist)
+        if (id == Guid.Empty)
+        {
+            return Task.FromResult(new Flow
+            {
+                Id = Guid.NewGuid(),
+                PersistState = PersistState.New
+            });
+        }
+
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
         if (!_dataService.Flows.TryGetValue(id, out var value))
@@ -77,11 +87,15 @@ internal class FlowService : IFlowService
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
         flow.Id = Guid.NewGuid();
+        flow.PersistState = PersistState.Unmodified;
 
         var dataStorePath = Path.GetFullPath(_dataStorePath);
         var flowPath = Path.Combine(dataStorePath, DataService.DirectoryFlows, $"{flow.Id}.json");
         var json = JsonSerializer.Serialize(flow, JsonSerializerExtensions.ApiSerializerOptions);
         await File.WriteAllTextAsync(flowPath, json, cancellationToken);
+
+        // Add the flow to the loaded flows
+        _dataService.Flows.Add(flow.Id, flow);
 
         return JsonSerializer.Deserialize<Flow>(json, JsonSerializerExtensions.ApiSerializerOptions)!;
     }
@@ -90,10 +104,15 @@ internal class FlowService : IFlowService
     {
         using var dataLock = _dataLockService.GetLock(DataLocks.AppData);
 
+        flow.PersistState = PersistState.Unmodified;
+
         var dataStorePath = Path.GetFullPath(_dataStorePath);
         var flowPath = Path.Combine(dataStorePath, DataService.DirectoryFlows, $"{flow.Id}.json");
         var json = JsonSerializer.Serialize(flow, JsonSerializerExtensions.ApiSerializerOptions);
         await File.WriteAllTextAsync(flowPath, json, cancellationToken);
+
+        // Update the flow in the loaded flows
+        _dataService.Flows[flow.Id] = flow;
 
         return JsonSerializer.Deserialize<Flow>(json, JsonSerializerExtensions.ApiSerializerOptions)!;
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace Mekatrol.Automatum.NodeServer;
 
@@ -13,15 +14,32 @@ public class NonNullablePropertiesRequiredSchemaFilter : ISchemaFilter
 {
     public void Apply(OpenApiSchema model, SchemaFilterContext context)
     {
-        // Get all non-nullable properties from model
-        var requiredProperties = model.Properties
-            .Where(x => !x.Value.Nullable && !model.Required.Contains(x.Key))
-            .Select(x => x.Key);
-        
-        // Mark property as required in schema json
-        foreach (var propertyKey in requiredProperties)
+        var typeProperties = context.Type
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .ToList();
+
+        foreach (var p in model.Properties)
         {
-            model.Required.Add(propertyKey);
+            // Given this is a public property there should be exactly one, and if not we want an exception ias it is unexpected
+            var typeProperty = typeProperties.Single(tp => tp.Name.Equals(p.Key, StringComparison.OrdinalIgnoreCase));
+
+            var isNullable = IsNullable(typeProperty);
+
+            if (!isNullable && !model.Required.Contains(p.Key))
+            {
+                model.Required.Add(p.Key);
+                p.Value.Nullable = false;
+            }
         }
+    }
+
+    private static bool IsNullable(PropertyInfo pi)
+    {
+        return
+            // Is nullable if has nullable attribute
+            pi.CustomAttributes.Any(cc => cc.AttributeType.FullName!.StartsWith("System.Runtime.CompilerServices.NullableAttribute")) ||
+
+            // Is nullable is undelying type is a nullable type
+            Nullable.GetUnderlyingType(pi.PropertyType) != null;
     }
 }

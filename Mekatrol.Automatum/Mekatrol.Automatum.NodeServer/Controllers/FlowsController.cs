@@ -19,7 +19,7 @@ public class FlowsController(ILogger<DataController> logger, IFlowService flowSe
     [HttpGet("{id}")]
     public async Task<Flow> Get(Guid id, CancellationToken cancellationToken)
     {
-        logger.LogDebug("{message}", $"Getting flow with ID '${id}'");
+        logger.LogDebug("{message}", $"Getting flow with ID '{id}'");
         var flow = await flowService.Get(id, cancellationToken);
         return flow;
     }
